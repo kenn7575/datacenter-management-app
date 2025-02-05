@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'auth_provider.dart';
-import 'app_router.dart';
+import 'src/login/auth_provider.dart';
+import 'src/app_router.dart';
 
 void main() {
   runApp(
