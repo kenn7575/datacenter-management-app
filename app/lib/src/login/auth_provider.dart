@@ -9,7 +9,7 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isAuthenticated => _isAuthenticated;
 
-  void login(String username, String password) async {
+  Future<void> login(String username, String password) async {
     // Fake login logic
     final dio = Dio();
     dio.options = BaseOptions(
@@ -19,21 +19,18 @@ class AuthProvider extends ChangeNotifier {
     );
 
     try {
-      print("Attempting login request...");
+      //send login request
       Response response = await dio.post(
         "$kBackendUrl/api/Account/login",
         data: {"username": username, "password": password},
       );
-
-      print("Response received!");
-      print("Status Code: ${response.statusCode}");
-      print("Response Data: ${response.data}");
-
       TokenModel token = TokenModel.FromJson(json: response.data);
 
+      //store access token
       final storage = FlutterSecureStorage();
-      await storage.write(key: "RefreshToken", value: token.token);
+      await storage.write(key: "AccessToken", value: token.token);
 
+      //update auth state
       _isAuthenticated = true;
       notifyListeners();
     } on DioException catch (dioError) {
@@ -52,6 +49,11 @@ class AuthProvider extends ChangeNotifier {
 
   void logout() {
     _isAuthenticated = false;
+
+    //clear access token
+    final storage = FlutterSecureStorage();
+    storage.delete(key: "AccessToken");
+
     notifyListeners();
   }
 }
