@@ -56,4 +56,25 @@ class AuthProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void CheckForValidToken() async {
+    try {
+      final dio = Dio();
+      final storage = FlutterSecureStorage();
+
+      String? token = await storage.read(key: "AccessToken");
+
+      Response response = await dio.post(
+          "$kBackendUrl/api/Account/RefreshToken",
+          data: {"Token": token});
+
+      TokenModel tokenM = TokenModel.FromJson(json: response.data);
+
+      await storage.write(key: "AccessToken", value: tokenM.token);
+
+      _isAuthenticated = true;
+    } catch (e) {
+      _isAuthenticated = false;
+    }
+  }
 }

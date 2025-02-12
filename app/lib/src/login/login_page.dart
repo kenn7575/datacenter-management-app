@@ -25,6 +25,13 @@ class _LoginFromState extends State<LoginFrom> {
   String password = "";
 
   @override
+  void initState() {
+    bool NO = false;
+    super.initState();
+    Provider.of<AuthProvider>(context, listen: NO).CheckForValidToken();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
       child: Column(
