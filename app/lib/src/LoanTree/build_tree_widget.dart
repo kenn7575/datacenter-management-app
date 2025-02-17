@@ -1,20 +1,20 @@
 import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:app/src/LoanTree/loan_item_model.dart';
 
-TreeNode<ItemModel> buildTree(ItemModel item) {
+TreeNode<ItemTreeModel> buildTree(ItemTreeModel item) {
   return TreeNode(
     key: item.name, // Unique key for each node
     data: item, // Store the ItemModel in the node
   )..addAll(item.childData.map(buildTree)); // Recursively add child nodes
 }
 
-TreeNode<ItemModel> buildTreeFromList(List<ItemModel> items) {
+TreeNode<ItemTreeModel> buildTreeFromList(List<ItemTreeModel> items) {
   if (items.isEmpty) {
     return TreeNode.root();
   }
 
-  TreeNode<ItemModel> root = TreeNode.root(
-      data: ItemModel(
+  TreeNode<ItemTreeModel> root = TreeNode.root(
+      data: ItemTreeModel(
     id: 0,
     owner: "",
     name: "Datacenter",
@@ -26,11 +26,11 @@ TreeNode<ItemModel> buildTreeFromList(List<ItemModel> items) {
     childData: [],
   )); // Root without data
 
-  final Map<int, TreeNode<ItemModel>> nodeMap = {};
+  final Map<int, TreeNode<ItemTreeModel>> nodeMap = {};
 
   // Step 1: Create all nodes and store them in a map
   for (var item in items) {
-    nodeMap[item.id] = TreeNode<ItemModel>(key: item.name, data: item);
+    nodeMap[item.id] = TreeNode<ItemTreeModel>(key: item.name, data: item);
   }
 
   // Step 2: Assign children based on `parentId`
@@ -40,7 +40,7 @@ TreeNode<ItemModel> buildTreeFromList(List<ItemModel> items) {
     if (item.parentId == null) {
       root.add(node); // Top-level nodes attach directly to root
     } else {
-      TreeNode<ItemModel>? parent = nodeMap[item.parentId];
+      TreeNode<ItemTreeModel>? parent = nodeMap[item.parentId];
       if (parent != null) {
         parent.add(node); // Attach to parent
       }

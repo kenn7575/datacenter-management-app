@@ -36,35 +36,35 @@ String jsonString = '''
 }
 ''';
 Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-ItemModel item = ItemModel.fromJson(jsonMap);
+ItemTreeModel item = ItemTreeModel.fromJson(jsonMap);
 
-class LoanDetailsPage extends StatefulWidget {
-  const LoanDetailsPage({super.key, required this.loanId});
+class LoanTreePage extends StatefulWidget {
+  const LoanTreePage({super.key, required this.loanId});
 
   final String loanId;
 
   @override
-  State<LoanDetailsPage> createState() => _LoanDetailsPageState();
+  State<LoanTreePage> createState() => _LoanTreePageState();
 }
 
-class _LoanDetailsPageState extends State<LoanDetailsPage> {
+class _LoanTreePageState extends State<LoanTreePage> {
   late int idAsInt;
 
   @override
   void initState() {
     super.initState();
     idAsInt = int.parse(widget.loanId);
-    Provider.of<LoanDetailsProvider>(context, listen: false)
+    Provider.of<LoanTreeProvider>(context, listen: false)
         .fetchLoanItems(idAsInt);
   }
 
   @override
   Widget build(BuildContext context) {
     //TODO: uncomment this line to get the actual item from the provider
-    ItemModel? item =
-        Provider.of<LoanDetailsProvider>(context, listen: true).loanItems;
+    ItemTreeModel? item =
+        Provider.of<LoanTreeProvider>(context, listen: true).loanItems;
     Failure? failure =
-        Provider.of<LoanDetailsProvider>(context, listen: true).failure;
+        Provider.of<LoanTreeProvider>(context, listen: true).failure;
 
     return Scaffold(
         appBar: AppBar(

@@ -11,7 +11,7 @@ class TreeViewWidget extends StatefulWidget {
   const TreeViewWidget({super.key, required this.loanId, required this.items});
 
   final String loanId;
-  final List<ItemModel> items;
+  final List<ItemTreeModel> items;
 
   @override
   State<TreeViewWidget> createState() => _TreeViewWidgetState();
@@ -27,7 +27,7 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
   void initState() {
     super.initState();
     idAsInt = int.parse(widget.loanId);
-    Provider.of<LoanDetailsProvider>(context, listen: false)
+    Provider.of<LoanTreeProvider>(context, listen: false)
         .fetchLoanItems(idAsInt);
   }
 
@@ -54,7 +54,7 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
           showRootNode: false,
           focusToNewNode: true,
           builder: (context, node) {
-            ItemModel? item = node.data;
+            ItemTreeModel? item = node.data;
 
             Color nodeColor = levelColors[node.level % levelColors.length];
 

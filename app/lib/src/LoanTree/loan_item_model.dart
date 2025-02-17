@@ -1,4 +1,4 @@
-class ItemModel {
+class ItemTreeModel {
   final int id;
   final int? parentId;
   final String owner;
@@ -9,9 +9,9 @@ class ItemModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final String? description;
-  final List<ItemModel> childData;
+  final List<ItemTreeModel> childData;
 
-  ItemModel({
+  ItemTreeModel({
     required this.id,
     required this.owner,
     required this.name,
@@ -22,11 +22,11 @@ class ItemModel {
     required this.updatedAt,
     this.parentId,
     this.description,
-    this.childData = const <ItemModel>[],
+    this.childData = const <ItemTreeModel>[],
   });
 
-  factory ItemModel.fromJson(Map<String, dynamic> json) {
-    return ItemModel(
+  factory ItemTreeModel.fromJson(Map<String, dynamic> json) {
+    return ItemTreeModel(
       id: json['id'],
       parentId: json['parentId'],
       owner: json['owner'],
@@ -38,7 +38,7 @@ class ItemModel {
       updatedAt: DateTime.parse(json['updatedAt']),
       description: json['description'],
       childData: (json['childData'] as List<dynamic>?)
-              ?.map((e) => ItemModel.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => ItemTreeModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
     );

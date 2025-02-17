@@ -1,4 +1,4 @@
-import 'package:app/src/LoanDetails/loan_details_provider.dart';
+import 'package:app/src/LoanTree/loan_details_provider.dart';
 import 'package:app/src/scanner/scanner_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => authProvider),
-        ChangeNotifierProvider(create: (context) => LoanDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => LoanTreeProvider()),
         ChangeNotifierProvider(create: (context) => ScannerProvider())
       ],
       child: MyApp(authProvider: authProvider),

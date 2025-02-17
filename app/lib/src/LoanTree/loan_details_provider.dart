@@ -4,8 +4,8 @@ import 'package:app/src/utils/errors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class LoanDetailsProvider extends ChangeNotifier {
-  ItemModel? loanItems;
+class LoanTreeProvider extends ChangeNotifier {
+  ItemTreeModel? loanItems;
   Failure? failure;
 
   Future<void> fetchLoanItems(int id) async {
@@ -18,7 +18,7 @@ class LoanDetailsProvider extends ChangeNotifier {
       Response response =
           await dio.get("$kBackendUrl/api/Items/GetItemsInLoan?loanId=$id");
 
-      ItemModel itemModel = ItemModel.fromJson(response.data);
+      ItemTreeModel itemModel = ItemTreeModel.fromJson(response.data);
       loanItems = itemModel;
     } on DioException catch (e) {
       if (e.response?.statusCode == 400) {

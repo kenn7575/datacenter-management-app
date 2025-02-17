@@ -1,4 +1,4 @@
-import 'package:app/src/LoanDetails/loan_details_page.dart';
+import 'package:app/src/LoanTree/loan_details_page.dart';
 import 'package:app/src/login/login_page.dart';
 import 'package:app/src/main_route_layout.dart';
 import 'package:app/src/scanner/qr_scanner_page.dart';
@@ -37,7 +37,7 @@ class AppRouter {
               path: "/loans/:loanId",
               builder: (context, state) {
                 final loanId = state.pathParameters['loanId']!;
-                return LoanDetailsPage(
+                return LoanTreePage(
                   loanId: loanId,
                 );
               },
