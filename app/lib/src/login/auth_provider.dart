@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:app/src/login/token_model.dart';
 import 'package:app/src/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -6,8 +7,10 @@ import 'package:dio/dio.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool _isAuthenticated = false;
+  String _errorMessage = "";
 
   bool get isAuthenticated => _isAuthenticated;
+  String get errorMessage => _errorMessage;
 
   Future<void> login(String username, String password) async {
     // Fake login logic
@@ -36,6 +39,9 @@ class AuthProvider extends ChangeNotifier {
     } on DioException catch (dioError) {
       print("Dio error occurred: ${dioError.message}");
       if (dioError.response != null) {
+        if (dioError.response?.statusCode == 401) {
+          _errorMessage = jsonDecode(dioError.response?.data);
+        }
         print("Response status: ${dioError.response?.statusCode}");
         print("Response data: ${dioError.response?.data}");
       } else {

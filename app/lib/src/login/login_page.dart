@@ -37,6 +37,11 @@ class _LoginFromState extends State<LoginFrom> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text.rich(
+            TextSpan(
+                text: Provider.of<AuthProvider>(context).errorMessage,
+                style: TextStyle(color: Color.fromARGB(0, 255, 0, 0))),
+          ),
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
