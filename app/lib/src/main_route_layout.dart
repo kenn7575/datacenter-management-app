@@ -1,5 +1,6 @@
 import 'package:app/src/login/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class MainRouteLayout extends StatefulWidget {
@@ -31,6 +32,9 @@ class _MainRouteLayoutState extends State<MainRouteLayout> {
           ),
         ],
         onTap: (index) {
+          if (index == 0) {
+            context.go("/");
+          }
           if (index == 1) {
             print("Logout");
             authProvider.logout();

@@ -4,7 +4,6 @@ import 'package:app/src/main_route_layout.dart';
 import 'package:app/src/scanner/qr_scanner_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'login/auth_provider.dart';
 
 class AppRouter {
@@ -35,13 +34,34 @@ class AppRouter {
               builder: (context, state) => Text("Scanner"),
             ),
             GoRoute(
-                path: "/loans/:loanId",
-                builder: (context, state) {
-                  final loanId = state.pathParameters['loanId']!;
-                  return MyHomePage(
-                    loanId: loanId,
-                  );
-                }),
+              path: "/loans/:loanId",
+              builder: (context, state) {
+                final loanId = state.pathParameters['loanId']!;
+                return LoanDetailsPage(
+                  loanId: loanId,
+                );
+              },
+            ),
+            GoRoute(
+              path: "/loans/:loanId/details",
+              builder: (context, state) {
+                final loanId = state.pathParameters['loanId']!;
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text("Loan $loanId Details"),
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        context.pop();
+                      },
+                    ),
+                  ),
+                  body: Center(
+                    child: Text("Details for loan $loanId"),
+                  ),
+                );
+              },
+            ),
           ],
           builder: (context, state, child) {
             return MainRouteLayout(
