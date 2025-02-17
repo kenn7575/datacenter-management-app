@@ -1,7 +1,7 @@
 import 'package:animated_tree_view/animated_tree_view.dart';
-import 'package:app/src/LoanDetails/build_tree_widget.dart';
-import 'package:app/src/LoanDetails/loan_details_provider.dart';
-import 'package:app/src/LoanDetails/loan_item_model.dart';
+import 'package:app/src/LoanTree/build_tree_widget.dart';
+import 'package:app/src/LoanTree/loan_details_provider.dart';
+import 'package:app/src/LoanTree/loan_item_model.dart';
 import 'package:app/src/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

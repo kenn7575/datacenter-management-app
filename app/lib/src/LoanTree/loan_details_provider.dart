@@ -1,4 +1,4 @@
-import 'package:app/src/LoanDetails/loan_item_model.dart';
+import 'package:app/src/LoanTree/loan_item_model.dart';
 import 'package:app/src/utils/constants.dart';
 import 'package:app/src/utils/errors.dart';
 import 'package:dio/dio.dart';
