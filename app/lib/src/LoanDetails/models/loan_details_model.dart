@@ -1,6 +1,5 @@
 import 'package:app/src/LoanDetails/models/item_model.dart';
 import 'package:app/src/LoanDetails/models/loan_model.dart';
-import 'package:flutter/material.dart';
 
 class LoanDetailsModel {
   final LoanModel loanModel;

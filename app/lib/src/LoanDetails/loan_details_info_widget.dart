@@ -1,4 +1,5 @@
 import 'package:app/src/LoanDetails/models/loan_details_model.dart';
+import 'package:app/src/LoanDetails/time_info_grid_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoanDetailsInfoWidget extends StatelessWidget {
@@ -12,93 +13,202 @@ class LoanDetailsInfoWidget extends StatelessWidget {
   }
 }
 
+// Page with blue header and a draggable scrollable sheet overlay.
 class LoanDetailsCard extends StatelessWidget {
   final LoanDetailsModel loanDetailsModel;
 
   const LoanDetailsCard({super.key, required this.loanDetailsModel});
 
-  // Helper widget to build a details card for the provided title and data map.
-  Widget buildDetailCard(String title, Map<String, String> details) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            // Display each key-value pair.
-            ...details.entries.map((entry) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        "${entry.key}:",
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Text(entry.value),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ),
+  // Helper to build a row displaying a label and value.
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.grey),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // Convert the LoanModel to a Map for easier UI rendering.
-  Map<String, String> getLoanDetailsMap() {
-    final loan = loanDetailsModel.loanModel;
-    return {
-      'ID': '${loan.id}',
-      'Loaner ID': loan.loanerId,
-      'Item ID': '${loan.itemId}',
-      'Name': loan.name,
-      'Returned At': loan.returnedAt,
-      'Created At': loan.createdAt?.toIso8601String() ?? 'N/A',
-      'Updated At': loan.updatedAt?.toIso8601String() ?? 'N/A',
-      'Lease End Date': loan.leaseEndDate?.toIso8601String() ?? 'N/A',
-      'Status': loan.status ?? 'N/A',
-      'Location': loan.location?.toString() ?? 'N/A',
-    };
+  // A badge widget for statuses.
+  Widget _buildBadge(String text, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
+      child: Text(
+        text,
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+    );
   }
 
-  // Convert the ItemModel to a Map for easier UI rendering.
-  Map<String, String> getItemDetailsMap() {
-    final item = loanDetailsModel.itemModel;
-    return {
-      'ID': '${item.id}',
-      'Machine type': item.parentId == null ? 'Physical' : "Virtuel",
-      'Owner': item.owner,
-      'Name': item.name,
-      'OS': item.os,
-      'Status': item.status,
-      'Retirement': item.retirement.toIso8601String(),
-      'Created At': item.createdAt.toIso8601String(),
-      'Updated At': item.updatedAt.toIso8601String(),
-      'Description': item.description ?? 'N/A',
-    };
+  // Determines badge color based on status.
+  Color _statusColor(String status) {
+    return status.toLowerCase() == 'active' ? Colors.green : Colors.red;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final loan = loanDetailsModel.loanModel;
+    final item = loanDetailsModel.itemModel;
+
+    return Scaffold(
+      body: Stack(
         children: [
-          buildDetailCard("Loan Details", getLoanDetailsMap()),
-          buildDetailCard("Item Details", getItemDetailsMap()),
+          // Blue header background with device info.
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.blue, Colors.blueAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Device Icon and basic info.
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.devices,
+                        size: 30,
+                        color: Colors.blueAccent,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Owner: ${item.owner}",
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Status and OS badges.
+                Row(
+                  children: [
+                    _buildBadge(loan.status ?? 'N/A',
+                        _statusColor(loan.status ?? 'N/A')),
+                    const SizedBox(width: 12),
+                    _buildBadge(item.os, Colors.deepOrange),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  item.description ?? "No Description",
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+          // Draggable Scrollable Sheet with additional details.
+          DraggableScrollableSheet(
+            initialChildSize: 0.55,
+            minChildSize: 0.20,
+            maxChildSize: 0.99,
+            builder: (context, scrollController) {
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, -2),
+                    )
+                  ],
+                ),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // A grabber indicator.
+                      Center(
+                        child: Container(
+                          width: 50,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      // section title
+                      Text(
+                        "Loan Details",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      // Loan Bento Grid
+                      LoanTimeInfoGrid(loan: loan),
+                      const SizedBox(height: 16),
+                      // Blended Details
+                      _buildDetailRow("Loan ID", loan.id.toString()),
+                      const Divider(),
+                      _buildDetailRow("Loaner ID", loan.loanerId),
+                      const Divider(),
+                      _buildDetailRow("Item ID", loan.itemId.toString()),
+
+                      const Divider(),
+                      _buildDetailRow(
+                          "Description", item.description ?? "No Description"),
+
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
