@@ -1,3 +1,4 @@
+import 'package:app/src/LoanDetails/loan_details_provider.dart';
 import 'package:app/src/LoanTree/loan_details_provider.dart';
 import 'package:app/src/scanner/scanner_provider.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => authProvider),
         ChangeNotifierProvider(create: (context) => LoanTreeProvider()),
-        ChangeNotifierProvider(create: (context) => ScannerProvider())
+        ChangeNotifierProvider(create: (context) => ScannerProvider()),
+        ChangeNotifierProvider(create: (context) => LoanDetailsProvider()),
       ],
       child: MyApp(authProvider: authProvider),
     ),

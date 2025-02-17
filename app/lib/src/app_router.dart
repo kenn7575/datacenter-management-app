@@ -1,3 +1,4 @@
+import 'package:app/src/LoanDetails/loan_details_page.dart';
 import 'package:app/src/LoanTree/loan_details_page.dart';
 import 'package:app/src/login/login_page.dart';
 import 'package:app/src/main_route_layout.dart';
@@ -71,7 +72,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/login',
-          builder: (context, state) => LoginPage(),
+          builder: (context, state) => LoanDetailsPage(loanId: "1"),
         ),
       ],
     );
