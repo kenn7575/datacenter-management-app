@@ -22,7 +22,7 @@ class LoanTimeInfoGrid extends StatelessWidget {
   // Green if returned on time, red if too late, blueGrey if not yet returned.
   Color _returnBoxColor() {
     final DateTime? leaseEnd = loan.leaseEndDate;
-    final DateTime? returned = DateTime.tryParse(loan.returnedAt);
+    final DateTime? returned = loan.returnedAt;
     if (returned == null) {
       // Not yet returned
       return Colors.blueGrey;
@@ -79,6 +79,7 @@ class LoanTimeInfoGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
+    final DateTime? returnedAt = loan.returnedAt;
 
     // Box 1: Days since last updated.
     // Ensure loan.updatedAt is non-null.
@@ -94,21 +95,26 @@ class LoanTimeInfoGrid extends StatelessWidget {
     // Box 3: Days until the loan has to be returned.
     // If leaseEndDate is in the past, we'll show a negative number.
     final DateTime leaseEnd = loan.leaseEndDate ?? now;
-    final int daysUntilReturn = _daysDifference(now, leaseEnd);
-    final String leaseFormatted = _formatDate(leaseEnd);
+    final String daysUntilReturn = returnedAt == null
+        ? _daysDifference(now, leaseEnd).toString()
+        : "Returned";
+    final String leaseFormatted = returnedAt == null
+        ? "Days until return\n${_formatDate(leaseEnd)}"
+        : _formatDate(leaseEnd);
 
     // Box 4: The return date, or "Not yet returned" if parsing fails.
-    final DateTime? returnedAt = DateTime.tryParse(loan.returnedAt);
+    final DateTime? endLease = loan.leaseEndDate;
     final String returnedText =
         returnedAt != null ? _formatDate(returnedAt) : "Not yet returned";
-    final int? daysComparison =
-        returnedAt == null ? null : _daysDifference(createdAt, returnedAt);
+    final int? daysComparison = (returnedAt == null || endLease == null)
+        ? null
+        : _daysDifference(returnedAt, endLease);
     final String timeDescription = daysComparison == null
         ? ""
         : daysComparison > 0
-            ? "Returned $daysComparison days early"
+            ? "Returned ${daysComparison.abs()} days late"
             : daysComparison < 0
-                ? "Returned $daysComparison days late"
+                ? "Returned ${daysComparison.abs()} days early"
                 : "Returned on time";
 
     return GridView.count(
@@ -129,8 +135,8 @@ class LoanTimeInfoGrid extends StatelessWidget {
         ),
         // Box 3: Days until the loan has to be returned.
         _buildBox(
-          bigText: "$daysUntilReturn",
-          smallText: "Days until return\n($leaseFormatted)",
+          bigText: daysUntilReturn,
+          smallText: "($leaseFormatted)",
         ),
         // Box 4: Return date.
         _buildBox(

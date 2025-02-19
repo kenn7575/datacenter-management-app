@@ -38,28 +38,15 @@ class AppRouter {
               path: "/loans/:loanId",
               builder: (context, state) {
                 final loanId = state.pathParameters['loanId']!;
-                return LoanTreePage(
-                  loanId: loanId,
-                );
+                return LoanDetailsPage(loanId: loanId);
               },
             ),
             GoRoute(
-              path: "/loans/:loanId/details",
+              path: "/loans/:loanId/tree",
               builder: (context, state) {
                 final loanId = state.pathParameters['loanId']!;
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text("Loan $loanId Details"),
-                    leading: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        context.pop();
-                      },
-                    ),
-                  ),
-                  body: Center(
-                    child: Text("Details for loan $loanId"),
-                  ),
+                return LoanTreePage(
+                  loanId: loanId,
                 );
               },
             ),
@@ -72,7 +59,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/login',
-          builder: (context, state) => LoanDetailsPage(loanId: "1"),
+          builder: (context, state) => LoginPage(),
         ),
       ],
     );

@@ -4,10 +4,10 @@ class ItemModel {
   final String owner;
   final String name;
   final String os;
-  final String status;
-  final DateTime retirement;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int status;
+  final DateTime? retirement;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   final String? description;
 
   ItemModel({
@@ -16,9 +16,9 @@ class ItemModel {
     required this.name,
     required this.os,
     required this.status,
-    required this.retirement,
-    required this.createdAt,
-    required this.updatedAt,
+    this.retirement,
+    this.createdAt,
+    this.updatedAt,
     this.parentId,
     this.description,
   });
@@ -47,9 +47,9 @@ class ItemModel {
       'name': name,
       'os': os,
       'status': status,
-      'retirement': retirement.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'retirement': retirement?.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
       'description': description,
     };
   }

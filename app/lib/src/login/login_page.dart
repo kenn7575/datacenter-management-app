@@ -58,11 +58,19 @@ class _LoginFromState extends State<LoginFrom> {
             onChanged: (value) => {password = value},
           ),
           ElevatedButton(
-              onPressed: () => {
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .login(username, password)
-                  },
-              child: Text("Login"))
+            onPressed: () => {
+              Provider.of<AuthProvider>(context, listen: false)
+                  .login(username, password)
+            },
+            child: Text("Login"),
+          ),
+          ElevatedButton(
+            onPressed: () => {
+              Provider.of<AuthProvider>(context, listen: false)
+                  .login("jeff", "Ab_123456789")
+            },
+            child: Text("Instant Login(Debug)"),
+          )
         ],
       ),
     );

@@ -37,27 +37,38 @@ class _BarcodeScannerSimpleState extends State<BarcodeScannerSimple> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: [
-        MobileScanner(
-          onDetect: _handleBarcode,
-          overlayBuilder: (context, constraints) => Center(
-            child: Container(
-              width: 300,
-              height: 300,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                  width: 4,
+        ElevatedButton(
+            onPressed: () {
+              Provider.of<ScannerProvider>(context, listen: false)
+                  .disableScanner();
+              context.push('/loans/1');
+            },
+            child: Text("Go to Loan 1")),
+        Stack(
+          children: [
+            MobileScanner(
+              onDetect: _handleBarcode,
+              overlayBuilder: (context, constraints) => Center(
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red,
+                      width: 4,
+                    ),
+                  ),
                 ),
               ),
+              scanWindow: Rect.fromCenter(
+                center: MediaQuery.of(context).size.center(Offset.zero),
+                width: 300,
+                height: 300,
+              ),
             ),
-          ),
-          scanWindow: Rect.fromCenter(
-            center: MediaQuery.of(context).size.center(Offset.zero),
-            width: 300,
-            height: 300,
-          ),
+          ],
         ),
       ],
     );

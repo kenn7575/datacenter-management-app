@@ -20,7 +20,7 @@ String jsonString = '''
     "returnedAt": "2024-01-02T12:00:00.000Z",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-02T12:00:00.000Z",
-    "leaseEndDate": "2025-12-31T23:59:59.999Z",
+    "leaseEndDate": "2024-01-31T23:59:59.999Z",
     "status": "Active",
     "name": "Device A",
     "location": 1
@@ -40,7 +40,7 @@ String jsonString = '''
 }
 ''';
 Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-LoanDetailsModel loanDetailsPlaceholder = LoanDetailsModel.fromJson(jsonMap);
+// LoanDetailsModel loanDetailsPlaceholder = LoanDetailsModel.fromJson(jsonMap);
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage({super.key, required this.loanId});
@@ -63,33 +63,32 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    LoanDetailsModel? loanDetails = loanDetailsPlaceholder;
-    // Provider.of<LoanDetailsProvider>(context, listen: true)
-    //     .loanDetailsModel;
+    LoanDetailsModel? loanDetails =
+        Provider.of<LoanDetailsProvider>(context, listen: true)
+            .loanDetailsModel;
     Failure? failure;
     // = Provider.of<LoanDetailsProvider>(context, listen: true).failure;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Loan ${widget.loanId} Details'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Provider.of<ScannerProvider>(context, listen: false)
-                .enableScanner();
-            context.pop();
-          },
+        appBar: AppBar(
+          title: Text('Loan ${widget.loanId} Details'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Provider.of<ScannerProvider>(context, listen: false)
+                  .enableScanner();
+              context.pop();
+            },
+          ),
         ),
-      ),
-      body: loanDetails == null
-          ? LoadingWidget(title: "Loading loan details...")
-          : failure != null
-              ? Center(
-                  child: Text(failure.errorMessage),
-                )
-              : LoanDetailsInfoWidget(
-                  loanDetailsModel: loanDetails,
-                ),
-    );
+        body: loanDetails == null
+            ? LoadingWidget(title: "Loading loan details...")
+            : loanDetails != null
+                ? LoanDetailsInfoWidget(
+                    loanDetailsModel: loanDetails,
+                  )
+                : Center(
+                    child: Text("FEJL"),
+                  ));
   }
 }

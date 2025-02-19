@@ -1,4 +1,5 @@
 import 'package:app/src/LoanDetails/models/loan_details_model.dart';
+import 'package:app/src/security/authentication_middleware.dart';
 import 'package:app/src/utils/constants.dart';
 import 'package:app/src/utils/errors.dart';
 import 'package:dio/dio.dart';
@@ -9,14 +10,14 @@ class LoanDetailsProvider extends ChangeNotifier {
   Failure? failure;
 
   Future<void> fetchLoanDetails(int id) async {
-    final dio = Dio();
-
+    final authenticatedDioClient = AuthenticatedDioClient();
     try {
-      dio.options = BaseOptions(
+      authenticatedDioClient.client.options = BaseOptions(
         sendTimeout: Duration(seconds: 10),
       );
-      Response response =
-          await dio.get("$kBackendUrl/api/Items/GetLoanById?loanId=$id");
+
+      Response response = await authenticatedDioClient.client
+          .get("$kBackendUrl/api/Loans/GetLoanById?id=$id");
 
       LoanDetailsModel ldm = LoanDetailsModel.fromJson(response.data);
       loanDetailsModel = ldm;

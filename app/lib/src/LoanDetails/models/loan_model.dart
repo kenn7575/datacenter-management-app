@@ -3,24 +3,24 @@ class LoanModel {
   final String loanerId;
   final int itemId;
   final String name;
-  final String returnedAt;
+  final int status;
+  final int location;
+  final DateTime? returnedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? leaseEndDate;
-  final String? status;
-  final int? location;
 
   LoanModel({
     required this.id,
     required this.loanerId,
     required this.itemId,
     required this.name,
-    required this.returnedAt,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.leaseEndDate,
     required this.status,
-    this.location,
+    required this.location,
+    this.returnedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.leaseEndDate,
   });
 
   factory LoanModel.fromJson(Map<String, dynamic> json) {
@@ -29,7 +29,7 @@ class LoanModel {
       loanerId: json['loanerId'],
       itemId: json['itemId'],
       name: json['name'],
-      returnedAt: json['returnedAt'],
+      returnedAt: DateTime.parse(json['returnedAt']),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       leaseEndDate: DateTime.parse(json['leaseEndDate']),

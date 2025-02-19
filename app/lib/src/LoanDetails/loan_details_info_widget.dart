@@ -1,6 +1,7 @@
 import 'package:app/src/LoanDetails/models/loan_details_model.dart';
 import 'package:app/src/LoanDetails/time_info_grid_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanDetailsInfoWidget extends StatelessWidget {
   const LoanDetailsInfoWidget({super.key, required this.loanDetailsModel});
@@ -130,8 +131,8 @@ class LoanDetailsCard extends StatelessWidget {
                 // Status and OS badges.
                 Row(
                   children: [
-                    _buildBadge(loan.status ?? 'N/A',
-                        _statusColor(loan.status ?? 'N/A')),
+                    _buildBadge((loan.status ?? 0).toString(),
+                        _statusColor((loan.status ?? 0).toString())),
                     const SizedBox(width: 12),
                     _buildBadge(item.os, Colors.deepOrange),
                   ],
@@ -191,6 +192,13 @@ class LoanDetailsCard extends StatelessWidget {
                       // Loan Bento Grid
                       LoanTimeInfoGrid(loan: loan),
                       const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () =>
+                            {context.push('/loans/${loan.id}/tree')},
+                        child: Text("View Loan Tree"),
+                      ),
+                      const SizedBox(height: 16),
+
                       // Blended Details
                       _buildDetailRow("Loan ID", loan.id.toString()),
                       const Divider(),
