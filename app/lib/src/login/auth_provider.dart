@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:app/src/login/token_model.dart';
+import 'package:app/src/security/authentication_middleware.dart';
 import 'package:app/src/utils/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,18 @@ import 'package:dio/dio.dart';
 class AuthProvider extends ChangeNotifier {
   bool _isAuthenticated = false;
   String _errorMessage = "";
+  final AuthenticatedDioClient authenticatedDioClient;
 
   bool get isAuthenticated => _isAuthenticated;
   String get errorMessage => _errorMessage;
+
+  AuthProvider({required this.authenticatedDioClient}) {
+    authenticatedDioClient.isAuthenticated.addListener(() {
+      if (!authenticatedDioClient.isAuthenticated.value) {
+        logout();
+      }
+    });
+  }
 
   Future<void> login(String username, String password) async {
     // Fake login logic
