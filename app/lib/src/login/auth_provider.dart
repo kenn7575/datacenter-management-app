@@ -73,7 +73,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void CheckForValidToken() async {
+  void checkForValidToken() async {
     try {
       final dio = Dio();
       final storage = FlutterSecureStorage();
@@ -92,5 +92,6 @@ class AuthProvider extends ChangeNotifier {
     } catch (e) {
       _isAuthenticated = false;
     }
+    notifyListeners();
   }
 }
