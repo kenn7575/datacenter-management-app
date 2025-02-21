@@ -26,9 +26,8 @@ class _LoginFromState extends State<LoginFrom> {
 
   @override
   void initState() {
-    bool NO = false;
     super.initState();
-    Provider.of<AuthProvider>(context, listen: NO).CheckForValidToken();
+    Provider.of<AuthProvider>(context, listen: false).checkForValidToken();
   }
 
   @override
