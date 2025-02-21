@@ -40,7 +40,7 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
           child: Padding(
             padding: const EdgeInsets.only(top: 24.0),
             child: Text(
-              "Simple Sliver List",
+              "Tree of machines",
               style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),

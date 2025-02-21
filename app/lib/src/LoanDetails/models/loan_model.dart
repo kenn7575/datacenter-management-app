@@ -29,7 +29,9 @@ class LoanModel {
       loanerId: json['loanerId'],
       itemId: json['itemId'],
       name: json['name'],
-      returnedAt: DateTime.parse(json['returnedAt']),
+      returnedAt: json['returnedAt'] != null
+          ? DateTime.parse(json['returnedAt'])
+          : null,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
       leaseEndDate: DateTime.parse(json['leaseEndDate']),

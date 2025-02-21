@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 
 class LoanTreeProvider extends ChangeNotifier {
   ItemTreeModel? loanItems;
-  Failure? failure;
+  Failure? _failure;
+
+  Failure? get failure => _failure;
 
   Future<void> fetchLoanItems(int id) async {
     final authenticatedDioClient = AuthenticatedDioClient();
@@ -23,20 +25,20 @@ class LoanTreeProvider extends ChangeNotifier {
       loanItems = itemModel;
     } on DioException catch (e) {
       if (e.response?.statusCode == 400) {
-        failure = ValidationFailure(
+        _failure = ValidationFailure(
             statusCode: 400,
             errorMessage: 'Invalid input',
             fieldError: e.response?.data?["title"]);
       } else if (e.response?.statusCode == 404) {
-        failure = ServerFailure(
+        _failure = ServerFailure(
             statusCode: 404, errorMessage: 'Loan with id $id not found');
       } else {
-        failure = ServerFailure(
+        _failure = ServerFailure(
             errorMessage: 'An error occurred',
             statusCode: e.response?.statusCode ?? 500);
       }
     } catch (e) {
-      failure = ServerFailure(
+      _failure = ServerFailure(
         errorMessage: 'An error occurred',
       );
     }
