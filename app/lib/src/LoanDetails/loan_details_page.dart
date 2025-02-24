@@ -61,6 +61,31 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         .fetchLoanDetails(idAsInt);
   }
 
+  Future<void> _confirmReturnLoan(BuildContext context, int loanId) async {
+    final provider = Provider.of<LoanDetailsProvider>(context, listen: false);
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Confirm Return'),
+        content: Text('Are you sure you want to return this loan?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Confirm'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      await provider.returnLoan(loanId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     LoanDetailsModel? loanDetails =
@@ -86,6 +111,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
             : loanDetails != null
                 ? LoanDetailsInfoWidget(
                     loanDetailsModel: loanDetails,
+                    onReturnLoan: () => _confirmReturnLoan(context, idAsInt),
                   )
                 : Center(
                     child: Text("FEJL"),

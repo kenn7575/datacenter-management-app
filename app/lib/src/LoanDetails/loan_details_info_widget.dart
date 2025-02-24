@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoanDetailsInfoWidget extends StatelessWidget {
-  const LoanDetailsInfoWidget({super.key, required this.loanDetailsModel});
+  const LoanDetailsInfoWidget({super.key, required this.loanDetailsModel, required this.onReturnLoan});
 
   final LoanDetailsModel loanDetailsModel;
+  final VoidCallback onReturnLoan;
 
   @override
   Widget build(BuildContext context) {
-    return LoanDetailsCard(loanDetailsModel: loanDetailsModel);
+    return LoanDetailsCard(loanDetailsModel: loanDetailsModel, onReturnLoan: onReturnLoan);
   }
 }
 
@@ -18,7 +19,9 @@ class LoanDetailsInfoWidget extends StatelessWidget {
 class LoanDetailsCard extends StatelessWidget {
   final LoanDetailsModel loanDetailsModel;
 
-  const LoanDetailsCard({super.key, required this.loanDetailsModel});
+  const LoanDetailsCard({super.key, required this.loanDetailsModel, required this.onReturnLoan});
+
+  final VoidCallback onReturnLoan;
 
   // Helper to build a row displaying a label and value.
   Widget _buildDetailRow(String label, String value) {
@@ -196,6 +199,10 @@ class LoanDetailsCard extends StatelessWidget {
                         onPressed: () =>
                             {context.push('/loans/${loan.id}/tree')},
                         child: Text("View Loan Tree"),
+                      ),
+                      ElevatedButton(
+                        onPressed: onReturnLoan,
+                        child: Text("Return Loan"),
                       ),
                       const SizedBox(height: 16),
 

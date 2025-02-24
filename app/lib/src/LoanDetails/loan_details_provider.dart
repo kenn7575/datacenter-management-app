@@ -44,6 +44,35 @@ class LoanDetailsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> returnLoan(int id) async {
+    final authenticatedDioClient = AuthenticatedDioClient();
+    try {
+      Response response = await authenticatedDioClient.client
+          .put("$kBackendUrl/api/Loans/ChangeLoanStatus?id=$id", data: '"Inactive"');
+
+      if (response.statusCode == 200) {
+        await fetchLoanDetails(id);
+      } else {
+        print('Failed to return loan: ${response.data}');
+        failure = ServerFailure(
+            errorMessage: 'Failed to return loan',
+            statusCode: response.statusCode ?? 500);
+      }
+    } on DioException catch (e) {
+      print('DioException: ${e.response?.data}');
+      failure = ServerFailure(
+          errorMessage: 'An error occurred',
+          statusCode: e.response?.statusCode ?? 500);
+    } catch (e) {
+      print('Exception: $e');
+      failure = ServerFailure(
+        errorMessage: 'An error occurred',
+      );
+    }
+
+    notifyListeners();
+  }
+
   void logout() {
     notifyListeners();
   }
