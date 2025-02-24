@@ -195,14 +195,19 @@ class LoanDetailsCard extends StatelessWidget {
                       // Loan Bento Grid
                       LoanTimeInfoGrid(loan: loan),
                       const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () =>
-                            {context.push('/loans/${loan.id}/tree')},
-                        child: Text("View Loan Tree"),
-                      ),
-                      ElevatedButton(
-                        onPressed: onReturnLoan,
-                        child: Text("Return Loan"),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () =>
+                                {context.push('/loans/${loan.id}/tree')},
+                            child: Text("View Loan Tree"),
+                          ),
+                          ElevatedButton(
+                            onPressed: onReturnLoan,
+                            child: Text("Return Loan"),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
 
