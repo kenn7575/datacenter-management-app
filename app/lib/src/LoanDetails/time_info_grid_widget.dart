@@ -1,4 +1,5 @@
 // ignore: depend_on_referenced_packages
+import 'package:app/src/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:app/src/LoanDetails/models/loan_model.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +21,6 @@ class LoanTimeInfoGrid extends StatelessWidget {
 
   // Determine the background color for the return date box.
   // Green if returned on time, red if too late, blueGrey if not yet returned.
-  Color _returnBoxColor() {
-    final DateTime? leaseEnd = loan.leaseEndDate;
-    final DateTime? returned = loan.returnedAt;
-    if (returned == null) {
-      // Not yet returned
-      return Colors.blueGrey;
-    } else if (leaseEnd != null &&
-        (returned.isBefore(leaseEnd) || returned.isAtSameMomentAs(leaseEnd))) {
-      // Returned on time
-      return Colors.green;
-    } else {
-      // Returned too late
-      return Colors.red;
-    }
-  }
 
   // Build a single rounded box with a large number/text and a smaller description.
   Widget _buildBox({
@@ -142,8 +128,7 @@ class LoanTimeInfoGrid extends StatelessWidget {
         _buildBox(
           bigText: returnedText,
           smallText: timeDescription,
-          backgroundColor: _returnBoxColor(),
-          textColor: Colors.white,
+          backgroundColor: TimeCardBoxColor(loan),
         ),
       ],
     );

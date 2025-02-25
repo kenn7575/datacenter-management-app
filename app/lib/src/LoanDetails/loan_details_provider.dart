@@ -17,7 +17,7 @@ class LoanDetailsProvider extends ChangeNotifier {
       );
 
       Response response = await authenticatedDioClient.client
-          .get("$kBackendUrl/api/Loans/GetLoanById?id=$id");
+          .get("$kBackendUrl/api/Loans/GetLoanByItemId?itemId=$id");
 
       LoanDetailsModel ldm = LoanDetailsModel.fromJson(response.data);
       loanDetailsModel = ldm;

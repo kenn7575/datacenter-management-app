@@ -43,7 +43,7 @@ class _BarcodeScannerSimpleState extends State<BarcodeScannerSimple> {
         //   onPressed: () {
         //     Provider.of<ScannerProvider>(context, listen: false)
         //         .disableScanner();
-        //     context.push('/loans/1');
+        //     context.push('/loans/4');
         //   },
         //   child: Text("Go to Loan 1"),
         // ),

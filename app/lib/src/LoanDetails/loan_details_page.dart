@@ -17,11 +17,11 @@ String jsonString = '''
     "id": 1,
     "itemId": 1,
     "loanerId": "fgsda-skdsd-asgss-sdfsf",
-    "returnedAt": "2024-01-02T12:00:00.000Z",
+    "returnedAt": "2024-02-02T12:00:00.000Z",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-02T12:00:00.000Z",
     "leaseEndDate": "2024-01-31T23:59:59.999Z",
-    "status": "Active",
+    "status": 1,
     "name": "Device A",
     "location": 1
   },
@@ -30,17 +30,17 @@ String jsonString = '''
     "name": "Device A",
     "owner": "Alice",
     "os": "Windows",
-    "status": "Active",
+    "status": 1,
     "retirement": "2025-12-31T23:59:59.999Z",
     "createdAt": "2024-01-01T12:00:00.000Z",
     "updatedAt": "2024-01-02T12:00:00.000Z",
-    "description": "This is a device",
+    "description": "This is a device that where installed in the rack, for the purpose of testing a new cisco update.",
     "parentId": null
     }
 }
 ''';
 Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-// LoanDetailsModel loanDetailsPlaceholder = LoanDetailsModel.fromJson(jsonMap);
+LoanDetailsModel loanDetailsPlaceholder = LoanDetailsModel.fromJson(jsonMap);
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage({super.key, required this.loanId});
@@ -95,26 +95,31 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     // = Provider.of<LoanDetailsProvider>(context, listen: true).failure;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Loan ${widget.loanId} Details'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Provider.of<ScannerProvider>(context, listen: false)
-                  .enableScanner();
-              context.pop();
-            },
-          ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        elevation: 0,
+        title: Text('Loan ${widget.loanId} Details',
+            style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Provider.of<ScannerProvider>(context, listen: false)
+                .enableScanner();
+            context.pop();
+          },
         ),
-        body: loanDetails == null
-            ? LoadingWidget(title: "Loading loan details...")
-            : loanDetails != null
-                ? LoanDetailsInfoWidget(
-                    loanDetailsModel: loanDetails,
-                    onReturnLoan: () => _confirmReturnLoan(context, idAsInt),
-                  )
-                : Center(
-                    child: Text("FEJL"),
-                  ));
+      ),
+      body: loanDetails == null
+          ? LoadingWidget(title: "Loading loan details...")
+          : loanDetails != null
+              ? LoanDetailsInfoWidget(
+                  loanDetailsModel: loanDetails,
+                  onReturnLoan: () => _confirmReturnLoan(context, idAsInt),
+                )
+              : Center(
+                  child: Text("FEJL"),
+                ),
+    );
   }
 }

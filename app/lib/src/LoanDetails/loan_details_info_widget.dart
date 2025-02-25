@@ -1,7 +1,11 @@
+import 'package:app/src/LoanDetails/mesh_gradient_widget.dart';
 import 'package:app/src/LoanDetails/models/loan_details_model.dart';
 import 'package:app/src/LoanDetails/time_info_grid_widget.dart';
+import 'package:app/src/utils/colors.dart';
+import 'package:app/src/utils/custom_badge_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mesh_gradient/mesh_gradient.dart';
 
 class LoanDetailsInfoWidget extends StatelessWidget {
   const LoanDetailsInfoWidget({super.key, required this.loanDetailsModel, required this.onReturnLoan});
@@ -50,25 +54,6 @@ class LoanDetailsCard extends StatelessWidget {
     );
   }
 
-  // A badge widget for statuses.
-  Widget _buildBadge(String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration:
-          BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        text,
-        style:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  // Determines badge color based on status.
-  Color _statusColor(String status) {
-    return status.toLowerCase() == 'active' ? Colors.green : Colors.red;
-  }
-
   @override
   Widget build(BuildContext context) {
     final loan = loanDetailsModel.loanModel;
@@ -78,76 +63,158 @@ class LoanDetailsCard extends StatelessWidget {
       body: Stack(
         children: [
           // Blue header background with device info.
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue, Colors.blueAccent],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Device Icon and basic info.
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          Stack(
+            children: [
+              AnimatedMeshGradientView(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 140, 20, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.devices,
-                        size: 30,
-                        color: Colors.blueAccent,
-                      ),
+                    // Device Icon and basic info.
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.devices,
+                            size: 30,
+                            color: Color.fromARGB(255, 242, 41, 152),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name,
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                "Owner: ${item.owner}",
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.name,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "Owner: ${item.owner}",
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 16),
+                    // Status and OS badges.
+                    Row(
+                      children: [
+                        customBadgeBuilder(
+                          (loan.status == 1) ? "Active" : "Inactive",
+                          getStatusBgColor(loan.status),
+                          getStatusTextColor(loan.status),
+                          borderColor: getStatusTextColor(loan.status),
+                        ),
+                        const SizedBox(width: 12),
+                        customBadgeBuilder(
+                          item.os,
+                          Color.fromARGB(255, 242, 41, 152),
+                          Colors.white,
+                          borderColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      item.description ?? "No Description",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                // Status and OS badges.
-                Row(
-                  children: [
-                    _buildBadge((loan.status ?? 0).toString(),
-                        _statusColor((loan.status ?? 0).toString())),
-                    const SizedBox(width: 12),
-                    _buildBadge(item.os, Colors.deepOrange),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  item.description ?? "No Description",
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
+              )
+            ],
           ),
+          // Container(
+          //   width: double.infinity,
+          //   decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //       colors: [Colors.green, Colors.blueAccent],
+          //       begin: Alignment.topLeft,
+          //       end: Alignment.bottomRight,
+          //     ),
+          //   ),
+          //   padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
+          //   child:
+          // Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       // Device Icon and basic info.
+          //       Row(
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           CircleAvatar(
+          //             radius: 30,
+          //             backgroundColor: Colors.white,
+          //             child: Icon(
+          //               Icons.devices,
+          //               size: 30,
+          //               color: Colors.blueAccent,
+          //             ),
+          //           ),
+          //           const SizedBox(width: 16),
+          //           Expanded(
+          //             child: Column(
+          //               crossAxisAlignment: CrossAxisAlignment.start,
+          //               children: [
+          //                 Text(
+          //                   item.name,
+          //                   style: const TextStyle(
+          //                     fontSize: 24,
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Colors.white,
+          //                   ),
+          //                 ),
+          //                 const SizedBox(height: 4),
+          //                 Text(
+          //                   "Owner: ${item.owner}",
+          //                   style: const TextStyle(
+          //                     color: Colors.white70,
+          //                     fontSize: 16,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       const SizedBox(height: 16),
+          //       // Status and OS badges.
+          //       Row(
+          //         children: [
+          //           _buildBadge((loan.status ?? 0).toString(),
+          //               _statusColor((loan.status ?? 0).toString())),
+          //           const SizedBox(width: 12),
+          //           _buildBadge(item.os, Colors.deepOrange),
+          //         ],
+          //       ),
+          //       const SizedBox(height: 24),
+          //       Text(
+          //         item.description ?? "No Description",
+          //         style: const TextStyle(color: Colors.white),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           // Draggable Scrollable Sheet with additional details.
           DraggableScrollableSheet(
             initialChildSize: 0.55,
