@@ -16,7 +16,7 @@ String jsonString = '''
   "name": "Device A",
   "owner": "Alice",
   "os": "Windows",
-  "status": "Active",
+  "status": 1,
   "retirement": "2025-12-31T23:59:59.999Z",
   "createdAt": "2024-01-01T12:00:00.000Z",
   "updatedAt": "2024-01-02T12:00:00.000Z",
@@ -26,17 +26,30 @@ String jsonString = '''
       "name": "Device B",
       "owner": "Alice",
       "os": "Linux",
-      "status": "Retired",
+      "status": 1,
       "retirement": "2023-06-15T10:30:00.000Z",
       "createdAt": "2023-01-01T08:00:00.000Z",
       "updatedAt": "2023-01-02T08:00:00.000Z",
-      "parentId": 1
+      "parentId": 1,
+      "childData": [
+    {
+      "id": 3,
+      "name": "Device C",
+      "owner": "Alice",
+      "os": "Docker",
+      "status": 1,
+      "retirement": "2023-06-15T10:30:00.000Z",
+      "createdAt": "2023-01-01T08:00:00.000Z",
+      "updatedAt": "2023-01-02T08:00:00.000Z",
+      "parentId": 2
+    }
+  ]
     }
   ]
 }
 ''';
 Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-ItemTreeModel item = ItemTreeModel.fromJson(jsonMap);
+ItemTreeModel itemPlaceholder = ItemTreeModel.fromJson(jsonMap);
 
 class LoanTreePage extends StatefulWidget {
   const LoanTreePage({super.key, required this.loanId});
@@ -68,7 +81,7 @@ class _LoanTreePageState extends State<LoanTreePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Loan ${widget.loanId} Details'),
+          title: Text('Setup overview'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

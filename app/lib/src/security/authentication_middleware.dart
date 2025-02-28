@@ -17,9 +17,6 @@ class AuthenticatedDioClient {
     client.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // Get the current access token
-          String? accessToken = await getAccessToken();
-
           // Check if the access token is expired
           bool isTokenValid = await checkTokenValidity();
           if (isTokenValid) {
@@ -34,6 +31,7 @@ class AuthenticatedDioClient {
             return;
           }
           // Add the authorization header with the access token
+          String? accessToken = await getAccessToken();
           options.headers['Authorization'] = 'Bearer $accessToken';
           handler.next(options);
         },

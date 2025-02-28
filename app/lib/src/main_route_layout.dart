@@ -27,8 +27,8 @@ class _MainRouteLayoutState extends State<MainRouteLayout> {
             label: 'Scan',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'User',
+            icon: Icon(Icons.logout),
+            label: 'Sign out',
           ),
         ],
         onTap: (index) {

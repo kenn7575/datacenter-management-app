@@ -22,6 +22,7 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
       GlobalKey<SliverTreeViewState>();
   final AutoScrollController scrollController = AutoScrollController();
   late int idAsInt;
+  TreeViewController? _controller;
 
   @override
   void initState() {
@@ -53,25 +54,27 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
           scrollController: scrollController,
           showRootNode: false,
           focusToNewNode: true,
+          onTreeReady: (controller) {
+            _controller = controller;
+            controller.expandAllChildren(controller.tree);
+          },
           builder: (context, node) {
             ItemTreeModel? item = node.data;
-
             Color nodeColor = levelColors[node.level % levelColors.length];
-
             return Card(
               color: nodeColor,
               child: InkWell(
                 onTap: () {
                   // navigate to the loan details page
-                  if (item?.id == null) return;
-                  context.push("/loans/${item?.id}/details");
+                  // if (item?.id == null) return;
+                  // context.push("/loans/${item?.id}/details");
                 },
                 child: ListTile(
                   title: Text(item?.name ?? "No title"),
                   subtitle: (item?.owner != "" && item?.os != "")
                       ? Text('Owner: ${item?.owner} - OS: ${item?.os}')
                       : Text(""),
-                  trailing: Text(item?.status.toString() ?? "No status"),
+                  trailing: Text((item?.status == 1) ? "Active" : "Inactive"),
                 ),
               ),
             );
