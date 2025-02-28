@@ -74,7 +74,7 @@ class _TreeViewWidgetState extends State<TreeViewWidget> {
                   subtitle: (item?.owner != "" && item?.os != "")
                       ? Text('Owner: ${item?.owner} - OS: ${item?.os}')
                       : Text(""),
-                  trailing: Text((item?.status == 1) ? "Active" : "Inactive"),
+                  trailing: Text((item?.status == 0) ? "Active" : "Inactive"),
                 ),
               ),
             );

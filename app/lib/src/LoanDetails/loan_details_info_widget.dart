@@ -8,14 +8,16 @@ import 'package:go_router/go_router.dart';
 import 'package:mesh_gradient/mesh_gradient.dart';
 
 class LoanDetailsInfoWidget extends StatelessWidget {
-  const LoanDetailsInfoWidget({super.key, required this.loanDetailsModel, required this.onReturnLoan});
+  const LoanDetailsInfoWidget(
+      {super.key, required this.loanDetailsModel, required this.onReturnLoan});
 
   final LoanDetailsModel loanDetailsModel;
   final VoidCallback onReturnLoan;
 
   @override
   Widget build(BuildContext context) {
-    return LoanDetailsCard(loanDetailsModel: loanDetailsModel, onReturnLoan: onReturnLoan);
+    return LoanDetailsCard(
+        loanDetailsModel: loanDetailsModel, onReturnLoan: onReturnLoan);
   }
 }
 
@@ -23,7 +25,8 @@ class LoanDetailsInfoWidget extends StatelessWidget {
 class LoanDetailsCard extends StatelessWidget {
   final LoanDetailsModel loanDetailsModel;
 
-  const LoanDetailsCard({super.key, required this.loanDetailsModel, required this.onReturnLoan});
+  const LoanDetailsCard(
+      {super.key, required this.loanDetailsModel, required this.onReturnLoan});
 
   final VoidCallback onReturnLoan;
 
@@ -116,7 +119,7 @@ class LoanDetailsCard extends StatelessWidget {
                     Row(
                       children: [
                         customBadgeBuilder(
-                          (loan.status == 1) ? "Active" : "Inactive",
+                          (loan.status == 0) ? "Active" : "Inactive",
                           getStatusBgColor(loan.status),
                           getStatusTextColor(loan.status),
                           borderColor: getStatusTextColor(loan.status),
